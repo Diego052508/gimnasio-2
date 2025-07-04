@@ -1,6 +1,7 @@
 from datetime import datetime
 from datos import clientes, asistencias, guardar_datos
 
+# Registra la asistencia de un cliente si está activo
 def registrar_asistencia():
     cedula = input("Cédula del cliente: ")
     if cedula not in clientes:
