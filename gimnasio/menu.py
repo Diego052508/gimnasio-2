@@ -4,6 +4,7 @@ from asistencias import registrar_asistencia
 from reportes import generar_reportes, verificar_alertas
 from datos import cargar_datos 
 
+# Muestra el menú principal del sistema y permite navegar por las opciones
 def mostrar_menu():
     while True:
         print("\n--- MENÚ DEL SISTEMA GIMNASIO ---")
@@ -17,7 +18,7 @@ def mostrar_menu():
         print("8. Eliminar cliente")
         print("0. Salir")
         opcion = input("Seleccione una opción: ")
-
+# Ejecuta la opción correspondiente
         if opcion == "1":
             registrar_cliente()
         elif opcion == "2":
@@ -39,7 +40,8 @@ def mostrar_menu():
             break
         else:
             print("Opción inválida.")
-
+            
+# Carga los datos almacenados y muestra el menú
 if __name__ == "__main__":
     mostrar_menu()
     cargar_datos()
