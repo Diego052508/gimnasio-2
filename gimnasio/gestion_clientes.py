@@ -1,17 +1,8 @@
 from datetime import datetime
 from datos import clientes, guardar_datos
+from validar import validar_entrada
 
-def validar_entrada(nombre, cedula, contacto, tipo_membresia):
-    if not nombre.replace(" ", "").isalpha():
-        return False, "El nombre solo debe contener letras."
-    if not (1 <= len(cedula) <= 5 and cedula.isalnum()):
-        return False, "La cédula debe contener hasta 5 caracteres alfanuméricos."
-    if not (contacto.isdigit() and len(contacto) == 8):
-        return False, "El contacto debe contener 8 dígitos numéricos."
-    if tipo_membresia.lower() not in ["mensual", "diaria"]:
-        return False, "El tipo de membresía debe ser 'mensual' o 'diaria'."
-    return True, ""
-
+# Registra un nuevo cliente en el sistema y lo guarda como inactivo inicialmente
 def registrar_cliente():
     nombre = input("Nombre del cliente: ")
     cedula = input("Cédula del cliente: ")
@@ -31,20 +22,22 @@ def registrar_cliente():
         'fecha_inicio': fecha_inicio,
         'fecha_renovacion': fecha_inicio,
         'pagos': [],
-        'activo': False
+        'activo': False # Se activa al registrar el primer pago
     }
     guardar_datos()
     print(f"\n Cliente {nombre} registrado como INACTIVO el {fecha_inicio.date()}.\n")
-
+    
+# Permite modificar los datos de un cliente ya registrado
 def modificar_cliente():
-    cedula = input("Ingrese la cédula del cliente a modificar: ")
+    cedula = input("Ingrese la cédula del cliente a modificar: ") #Busca al cliente segun su cedula 
     if cedula not in clientes:
         print("Cliente no encontrado.")
         return
 
     cliente = clientes[cedula]
-    print(f"Datos actuales: Nombre: {cliente['nombre']}, Contacto: {cliente['contacto']}, Membresía: {cliente['tipo_membresia']}")
+    print(f"Datos actuales: Nombre: {cliente['nombre']}, Contacto: {cliente['contacto']}, Membresía: {cliente['tipo_membresia']}") #muestra cuales son los datos actuales del cliente
 
+    # Ingresa los datos nuevos del cliente
     nuevo_nombre = input("Nuevo nombre (dejar vacío para no modificar): ")
     nuevo_contacto = input("Nuevo contacto (dejar vacío para no modificar): ")
     nuevo_tipo = input("Nuevo tipo de membresía (mensual o diaria, dejar vacío para no modificar): ")
@@ -56,9 +49,10 @@ def modificar_cliente():
     if nuevo_tipo.lower() in ["mensual", "diaria"]:
         cliente['tipo_membresia'] = nuevo_tipo
 
-    guardar_datos()
+    guardar_datos() #se guardan los datos actualizados del cliente
     print("Datos actualizados correctamente.")
 
+# Busca al cliente y muestra todos ssus datos
 def buscar_cliente():
     cedula = input("Ingrese la cédula del cliente a buscar: ")
     if cedula in clientes:
@@ -67,6 +61,7 @@ def buscar_cliente():
     else:
         print("Cliente no encontrado.")
 
+# Elimina al cliente con todos su datos
 def eliminar_cliente():
     cedula = input("Cédula del cliente a eliminar: ")
     from datos import asistencias  # evitar import circular
