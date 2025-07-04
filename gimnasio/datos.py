@@ -1,12 +1,15 @@
 import os
 from datetime import datetime
 
+# Diccionarios globales para almacenar clientes y asistencias
 clientes = {}
 asistencias = []
 
+# Nombres de los archivos que contienen los datos
 ARCHIVO_CLIENTES = "clientes.txt"
 ARCHIVO_ASISTENCIAS = "asistencias.txt"
 
+# Carga los datos de los clientes y asistencias desde los archivos
 def cargar_datos():
     global clientes, asistencias
     if os.path.exists(ARCHIVO_CLIENTES):
@@ -31,6 +34,7 @@ def cargar_datos():
                         'activo': estado == "Activo"
                     }
 
+     # Cargar asistencias
     if os.path.exists(ARCHIVO_ASISTENCIAS):
         with open(ARCHIVO_ASISTENCIAS, "r", encoding="utf-8") as f:
             for linea in f:
@@ -40,6 +44,7 @@ def cargar_datos():
                     fecha_str = partes[2].split(":")[1].strip()
                     asistencias.append({"cedula": cedula, "fecha": datetime.strptime(fecha_str, "%Y-%m-%d")})
 
+# Guarda los datos actuales de clientes y asistencias en archivos de texto
 def guardar_datos():
     with open(ARCHIVO_CLIENTES, "w", encoding="utf-8") as f:
         for cedula, cliente in clientes.items():
@@ -52,7 +57,7 @@ def guardar_datos():
                 f"Renovación: {cliente['fecha_renovacion'].date()} | "
                 f"Estado: {'Activo' if cliente['activo'] else 'Inactivo'}\n"
             )
-
+# Guardar asistencias
     with open(ARCHIVO_ASISTENCIAS, "w", encoding="utf-8") as f:
         for a in asistencias:
             nombre = clientes.get(a["cedula"], {}).get("nombre", "Desconocido")
