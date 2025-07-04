@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
 from datos import clientes, asistencias, guardar_datos
 
+# Genera y guarda un reporte semanal o mensual de asistencias y pagos
 def generar_reportes():
     print("\n--- Generar Reportes de Asistencia ---")
     print("1. Reporte semanal")
     print("2. Reporte mensual")
-    opcion = input("Seleccione una opción: ")
+    opcion = input("Seleccione una opción: ") #deja elejir que tipo de reporte se quiere
 
     hoy = datetime.now()
     if opcion == "1":
@@ -21,6 +22,7 @@ def generar_reportes():
     reporte = [titulo + "\n"]
     print(titulo + "\n")
 
+    # seccion de asistencia 
     reporte.append("--- Asistencias ---")
     print("--- Asistencias ---")
     for asistencia in asistencias:
@@ -30,6 +32,7 @@ def generar_reportes():
             print(linea)
             reporte.append(linea)
 
+    #secioon de pagos
     reporte.append("\n--- Pagos por Membresía ---")
     print("\n--- Pagos por Membresía ---")
     total_mensual = 0
@@ -51,6 +54,7 @@ def generar_reportes():
     reporte.append(linea_mensual)
     reporte.append(linea_diaria)
 
+    #estado de los clientes
     reporte.append("\n--- Estado de Clientes ---")
     print("\n--- Estado de Clientes ---")
     for cedula, cliente in clientes.items():
@@ -62,6 +66,7 @@ def generar_reportes():
     with open("reporte_semanal.txt" if opcion == "1" else "reporte_mensual.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(reporte))
 
+# Verifica clientes con membresía vencida y los marca como inactivos
 def verificar_alertas():
     hoy = datetime.now()
     inactivos = []
